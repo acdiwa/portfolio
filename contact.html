@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us</title>
+
+  <link rel="stylesheet" href="css/style3.css">
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+
+   <div class="nav-container">
+   <nav>
+    <div class="logo" id="logo-text">
+     Zach <i>CreativeStudio</i>
+    </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="product.html">Products</a></li>
+         <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+   </nav>
+
+  <div class="page-wrapper">
+   <div class="main-container">
+    <header class="page-header">
+     <h1 id="pageTitle">Get In Touch</h1>
+     <p id="pageSubtitle">We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+    </header>
+    <div class="content-grid">
+     <div class="contact-info-card">
+      <h2>Contact Information</h2>
+      <div class="info-item">
+       <div class="info-icon">
+        📍
+       </div>
+       <div class="info-content">
+        <h3>Address</h3>
+        <p id="companyAddress">10 Juan Luna Street, Brgy Parang<br>
+         Marikina, Philippines 1809</p>
+       </div>
+      </div>
+      <div class="info-item">
+       <div class="info-icon">
+        📞
+       </div>
+       <div class="info-content">
+        <h3>Phone</h3>
+        <p id="companyPhone">+63 977 632 7402</p>
+       </div>
+      </div>
+      <div class="info-item">
+       <div class="info-icon">
+        ✉️
+       </div>
+       <div class="info-content">
+        <h3>Email</h3>
+        <p id="companyEmail">azdiwa@icloud.com</p>
+       </div>
+      </div>
+     </div>
+     <div class="contact-form-card">
+      <h2 id="formTitle">Send Us a Message</h2>
+      <form id="contactForm">
+       <div class="form-row">
+        <div class="form-group"><label for="name">Full Name *</label> <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group"><label for="email">Email Address *</label> <input type="email" id="email" name="email" required>
+        </div>
+       </div>
+       <div class="form-row">
+        <div class="form-group"><label for="phone">Phone Number</label> <input type="tel" id="phone" name="phone">
+        </div>
+        <div class="form-group"><label for="subject">Subject *</label> <input type="text" id="subject" name="subject" required>
+        </div>
+       </div>
+       <div class="form-group"><label for="message">Message *</label> <textarea id="message" name="message" required></textarea>
+       </div><button type="submit" class="submit-btn" id="submitBtn"> <span id="submitBtnText">Send Message</span> </button>
+      </form>
+     </div>
+    </div>
+    <div class="map-section">
+     <h2>Find Us Here</h2>
+     <div class="map-placeholder">
+     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3859.9092529893533!2d121.10727777584471!3d14.661091075591333!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397b9910e878e87%3A0x4df1c38383d8c2c8!2s10%20Juan%20Luna%2C%20Marikina%2C%201809%20Metro%20Manila!5e0!3m2!1sen!2sph!4v1764558927377!5m2!1sen!2sph" width="1100" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <!-- Footer Section -->
+  <footer class="footer">
+   
+    <div class="footer-bottom">
+     <p id="footer-copyright"> © 2025 ZachCreativeStudio. All rights reserved.</p>
+    </div>
+   </div>
+  </footer>
+
+  <script>
+    let submissions = [];
+
+    const defaultConfig = {
+      page_title: "Get In Touch",
+      page_subtitle: "We'd love to hear from you. Send us a message and we'll respond as soon as possible.",
+      company_address: "123 Business Street, Suite 100<br>Manila, Philippines 1000",
+      company_phone: "+63 2 1234 5678",
+      company_email: "hello@company.com",
+      form_title: "Send Us a Message",
+      submit_button_text: "Send Message",
+      background_color: "#667eea",
+      card_background: "#ffffff",
+      text_color: "#2d3748",
+      button_color: "#667eea",
+      accent_color: "#764ba2"
+    };
+
+    const dataHandler = {
+      onDataChanged(data) {
+        submissions = data;
+        console.log(`Total submissions: ${data.length}`);
+      }
+    };
+
+    async function initApp() {
+      if (window.dataSdk) {
+        const initResult = await window.dataSdk.init(dataHandler);
+        if (!initResult.isOk) {
+          console.error("Failed to initialize data SDK");
+        }
+      }
+    }
+
+    document.getElementById('contactForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (submissions.length >= 999) {
+        showToast('error', 'Submission Limit Reached', 'Maximum limit of 999 submissions reached. Please contact support.');
+        return;
+      }
+
+      const submitBtn = document.getElementById('submitBtn');
+      const submitBtnText = document.getElementById('submitBtnText');
+      
+      submitBtn.disabled = true;
+      submitBtnText.innerHTML = '<span class="loading-spinner"></span>Sending...';
+
+      const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value || '',
+        subject: document.getElementById('subject').value,
+        message: document.getElementById('message').value,
+        submitted_at: new Date().toISOString()
+      };
+
+      if (window.dataSdk) {
+        const result = await window.dataSdk.create(formData);
+        
+        submitBtn.disabled = false;
+        submitBtnText.textContent = window.elementSdk?.config.submit_button_text || defaultConfig.submit_button_text;
+
+        if (result.isOk) {
+          showToast('success', 'Message Sent!', 'Thank you for contacting us. We\'ll get back to you soon.');
+          document.getElementById('contactForm').reset();
+        } else {
+          showToast('error', 'Error', 'Failed to send message. Please try again.');
+        }
+      }
+    });
+
+    function showToast(type, title, message) {
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      
+      const icon = type === 'success' ? '✅' : '❌';
+      
+      toast.innerHTML = `
+        <div class="toast-icon">${icon}</div>
+        <div class="toast-content">
+          <div class="toast-title">${title}</div>
+          <div class="toast-message">${message}</div>
+        </div>
+      `;
+      
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.animation = 'slideOutRight 0.3s ease';
+        setTimeout(() => {
+          document.body.removeChild(toast);
+        }, 300);
+      }, 4000);
+    }
+
+    async function onConfigChange(config) {
+      document.getElementById('pageTitle').textContent = config.page_title || defaultConfig.page_title;
+      document.getElementById('pageSubtitle').textContent = config.page_subtitle || defaultConfig.page_subtitle;
+      document.getElementById('companyAddress').innerHTML = config.company_address || defaultConfig.company_address;
+      document.getElementById('companyPhone').textContent = config.company_phone || defaultConfig.company_phone;
+      document.getElementById('companyEmail').textContent = config.company_email || defaultConfig.company_email;
+      document.getElementById('formTitle').textContent = config.form_title || defaultConfig.form_title;
+      document.getElementById('submitBtnText').textContent = config.submit_button_text || defaultConfig.submit_button_text;
+
+      const backgroundColor = config.background_color || defaultConfig.background_color;
+      const accentColor = config.accent_color || defaultConfig.accent_color;
+      document.querySelector('.page-wrapper').style.background = `linear-gradient(135deg, ${backgroundColor} 0%, ${accentColor} 100%)`;
+
+      const cardBg = config.card_background || defaultConfig.card_background;
+      document.querySelectorAll('.contact-info-card, .contact-form-card, .map-section').forEach(card => {
+        card.style.background = cardBg;
+      });
+
+      const textColor = config.text_color || defaultConfig.text_color;
+      document.querySelectorAll('.contact-info-card h2, .contact-form-card h2, .map-section h2, .info-content p, .map-text').forEach(el => {
+        el.style.color = textColor;
+      });
+
+      const buttonColor = config.button_color || defaultConfig.button_color;
+      document.querySelector('.submit-btn').style.background = `linear-gradient(135deg, ${buttonColor} 0%, ${accentColor} 100%)`;
+      
+      document.querySelectorAll('.info-icon').forEach(icon => {
+        icon.style.background = `linear-gradient(135deg, ${buttonColor} 0%, ${accentColor} 100%)`;
+      });
+
+      document.querySelectorAll('.info-content h3').forEach(h3 => {
+        h3.style.color = buttonColor;
+      });
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (value) => {
+                config.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            },
+            {
+              get: () => config.card_background || defaultConfig.card_background,
+              set: (value) => {
+                config.card_background = value;
+                window.elementSdk.setConfig({ card_background: value });
+              }
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => {
+                config.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            },
+            {
+              get: () => config.button_color || defaultConfig.button_color,
+              set: (value) => {
+                config.button_color = value;
+                window.elementSdk.setConfig({ button_color: value });
+              }
+            },
+            {
+              get: () => config.accent_color || defaultConfig.accent_color,
+              set: (value) => {
+                config.accent_color = value;
+                window.elementSdk.setConfig({ accent_color: value });
+              }
+            }
+          ],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ["page_title", config.page_title || defaultConfig.page_title],
+          ["page_subtitle", config.page_subtitle || defaultConfig.page_subtitle],
+          ["company_address", config.company_address || defaultConfig.company_address],
+          ["company_phone", config.company_phone || defaultConfig.company_phone],
+          ["company_email", config.company_email || defaultConfig.company_email],
+          ["form_title", config.form_title || defaultConfig.form_title],
+          ["submit_button_text", config.submit_button_text || defaultConfig.submit_button_text]
+        ])
+      });
+    }
+
+    initApp();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a6f53b5521ebc37',t:'MTc2NDU1Nzk1MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
